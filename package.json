@@ -1,6 +1,6 @@
 {
   "name": "@beuluis/create-helper",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A helper to create a create-something app",
   "main": "dist/index.js",
   "bin": "dist/index.js",
@@ -43,6 +43,12 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.8.3"
   },
-  "keywords": ["create", "create-something", "create-initializer", "initializer", "helper"],
+  "keywords": [
+    "create",
+    "create-something",
+    "create-initializer",
+    "initializer",
+    "helper"
+  ],
   "prettier": "@beuluis/prettier-config"
 }
