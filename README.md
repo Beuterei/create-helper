@@ -64,7 +64,7 @@ Example:
 #!/usr/bin/node
 
 import { resolve } from 'path';
-import { create } from './src';
+import { create } from '@beuluis/create-helper';
 import autocomplete, { AutocompleteQuestionOptions } from 'inquirer-autocomplete-prompt';
 
 // needed if you register a new prompt type
