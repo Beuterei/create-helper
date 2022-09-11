@@ -36,6 +36,8 @@ npm i @beuluis/create-helper
 
 This pack is meant to be used with the [npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) which runs the main bin of a pack when provided as parameter.
 
+Use [@beuluis/create-something](https://www.npmjs.com/package/@beuluis/create-something) or
+
 1. Create a new `create-something` pack.
 
 2. Create a bin script in the desired destination. (Make sure to set [main](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main) and [bin](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#bin))
@@ -239,6 +241,16 @@ It will create a project from test templates
 -   File permissions are preserved
 
 -   The template engine is also run for file and directory names
+
+-   NPM renames `.gitignore` to `.npmignore` during publish. To prevent this you can use echo in the filename: `{% echo '.gitignore' %}`
+
+-   NPM processed every `package.json` during publish and applied the `files` filter. To prevent this you can use echo in the filename: `{% echo 'package' %}.json` and add the `$schema` to the file for 'linting':
+
+    ```json
+    {
+        "$schema": "https://json.schemastore.org/package.json"
+    }
+    ```
 
 <!-- CONTRIBUTING -->
 
