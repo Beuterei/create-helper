@@ -1,6 +1,6 @@
 import { SpawnOptions, spawn } from 'child_process';
 
-interface ExecuteResolve {
+export interface ExecuteResolve {
     code: number;
     stdout: string;
     stderr: string;

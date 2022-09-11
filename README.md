@@ -38,7 +38,7 @@ This pack is meant to be used with the [npm init](https://docs.npmjs.com/cli/v8/
 
 1. Create a new `create-something` pack.
 
-2. Create a bin script in the desired destination. (Make sure to set [main](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main))
+2. Create a bin script in the desired destination. (Make sure to set [main](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#main) and [bin](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#bin))
 
 3. Call the `create` helper function and configure it.
 

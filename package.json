@@ -2,7 +2,9 @@
   "name": "@beuluis/create-helper",
   "version": "1.0.3",
   "description": "A helper to create a create-something app",
-  "main": "dist",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
