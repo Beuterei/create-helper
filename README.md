@@ -42,6 +42,16 @@ This pack is meant to be used with the [npm init](https://docs.npmjs.com/cli/v8/
 
 3. Call the `create` helper function and configure it.
 
+4. Publish your pack. The pack name has to be prefixed with `create-` for `npm create` to work.
+
+5. Run
+
+    ```bash
+    npm create @scope/your-pack <create_path>
+    # or
+    npx @scope/create-your-pack <create_path>
+    ```
+
 ## Functions
 
 ### Create helper function
@@ -154,9 +164,9 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 -   `registerPrompt` - Registered a new prompt. See [documentation of inquirer](https://www.npmjs.com/package/inquirer)
 
--   `registerQuestion` - Registers a new question with name as selector
+-   `registerQuestion` - Registers a new question with name as selector. See [documentation of inquirer](https://www.npmjs.com/package/inquirer) for question examples and types
 
--   `registerQuestions` - Bulk register new questions with name as selector
+-   `registerQuestions` - Bulk register new questions with name as selector. See [documentation of inquirer](https://www.npmjs.com/package/inquirer) for question examples and types
 
 -   `prompt` - internal use
 
@@ -202,6 +212,18 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 -   `license` - License of the new project
 
+## Mix use
+
+The [Create helper function](#Create helper function) uses [minimist](https://www.npmjs.com/package/minimist) to parse provided arguments.
+
+Those can be used to answer questions via arguments.
+
+## Select template
+
+Templates are provided via arguments: `--template <template_name>` will do the trick.
+
+If nothing is provided that helper function wil, fallback to the defined default template
+
 <!-- USEFUL -->
 
 ## Local testing
@@ -211,6 +233,12 @@ npm run test-cli
 ```
 
 It will create a project from test templates
+
+## Tips & Tricks
+
+-   File permissions are preserved
+
+-   The template engine is also run for file and directory names
 
 <!-- CONTRIBUTING -->
 
