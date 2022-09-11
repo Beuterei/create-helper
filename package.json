@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "prepack": "npm run build",
     "build": "tsc --build",
     "test-cli": "rm -Rf test/test-out && ts-node test/test-cli.ts test/test-out"
