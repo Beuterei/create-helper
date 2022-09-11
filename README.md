@@ -214,7 +214,7 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 ## Mix use
 
-The [Create helper function](#Create helper function) uses [minimist](https://www.npmjs.com/package/minimist) to parse provided arguments.
+The [Create helper function](#Create-helper-function) uses [minimist](https://www.npmjs.com/package/minimist) to parse provided arguments.
 
 Those can be used to answer questions via arguments.
 
