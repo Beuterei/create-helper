@@ -1,22 +1,22 @@
 {
-    "compilerOptions": {
-        "declaration": true,
-        "outDir": "dist",
-        "target": "es2019",
-        "lib": ["esnext", "DOM"],
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "importHelpers": true,
-        "sourceMap": true,
-        "incremental": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "skipLibCheck": true
-    },
-    "include": ["src"]
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist",
+    "target": "es2019",
+    "lib": ["esnext", "DOM"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "incremental": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"]
 }

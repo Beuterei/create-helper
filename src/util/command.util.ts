@@ -1,27 +1,34 @@
-import { SpawnOptions, spawn } from 'child_process';
+import type { SpawnOptions } from 'child_process';
+import { spawn } from 'child_process';
 
 export interface ExecuteResolve {
     code: number;
-    stdout: string;
     stderr: string;
+    stdout: string;
 }
 
 // Extend error to have additional context
 export class ExecuteError extends Error {
-    constructor(readonly code: number | null, readonly stdout: string, readonly stderr: string) {
+    public constructor(
+        public readonly code: number | null,
+        public readonly stdout: string,
+        public readonly stderr: string,
+    ) {
         super();
     }
 }
 
-/** Execute a command and collects the results */
-export const execute = (
+/**
+ * Execute a command and collects the results
+ */
+export const execute = async (
     command: string,
     args: string[] = [],
     options?: SpawnOptions,
 ): Promise<ExecuteResolve> =>
-    new Promise((resolve, rejects) => {
+    await new Promise((resolve, reject) => {
         // Filter custom options and use deconstruct to apply defaults
-        const { stdio = 'inherit', ...filteredOptions } = options || {};
+        const { stdio = 'inherit', ...filteredOptions } = options ?? {};
         let stdout = '';
         let stderr = '';
 
@@ -40,6 +47,6 @@ export const execute = (
         execution.on('exit', code =>
             code === 0
                 ? resolve({ code, stdout, stderr })
-                : rejects(new ExecuteError(code, stdout, stderr)),
+                : reject(new ExecuteError(code, stdout, stderr)),
         );
     });

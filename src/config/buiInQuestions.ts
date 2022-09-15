@@ -1,5 +1,5 @@
-import { DistinctQuestionModified } from '../shared/inquirer';
 import spdxLicenseList from '@ovyerus/licenses';
+import type { DistinctQuestionModified } from '../shared/inquirer';
 
 // declare module inquire to add the new question type
 declare module 'inquirer' {
@@ -9,9 +9,9 @@ declare module 'inquirer' {
 }
 
 export interface BuildInQuestions {
-    name: DistinctQuestionModified;
     description: DistinctQuestionModified;
     license: DistinctQuestionModified;
+    name: DistinctQuestionModified;
 }
 
 // Export all default questions to register
@@ -31,7 +31,7 @@ export const buiInQuestions: BuildInQuestions = {
         type: 'search-list',
         message: 'What license do you want to use?',
         name: 'license',
-        choices: ['MIT', ...Object.keys(spdxLicenseList).filter(el => el !== 'MIT')],
+        choices: ['MIT', ...Object.keys(spdxLicenseList).filter(element => element !== 'MIT')],
         default: 'MIT',
     },
 };

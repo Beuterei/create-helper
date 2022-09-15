@@ -1,6 +1,6 @@
-import { red } from 'colorette';
 import { readdir, stat } from 'fs/promises';
 import { join } from 'path';
+import { red } from 'colorette';
 
 // Helper function to print nice errors
 export const logAndFail = (error: string, trivia?: string): never => {
@@ -29,7 +29,12 @@ export const getAllFiles = async (
         // Check if we need to call self, for recursive behavior, based on if we currently looking at a directory
         if ((await stat(join(directoryPath, file))).isDirectory()) {
             // Call self to retrieve all files
-            arrayOfFiles = await getAllFiles(join(directoryPath, file), join(parentDirectory, file), arrayOfFiles);
+            // eslint-disable-next-line no-param-reassign
+            arrayOfFiles = await getAllFiles(
+                join(directoryPath, file),
+                join(parentDirectory, file),
+                arrayOfFiles,
+            );
         } else {
             // Push result if we are looking at a file
             arrayOfFiles.push(join(parentDirectory, file));

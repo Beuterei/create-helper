@@ -1,21 +1,21 @@
-import parseArgs from 'minimist';
-import { resolve, dirname } from 'path';
 import { existsSync } from 'fs';
 import { chmod, mkdir, readdir, stat, writeFile } from 'fs/promises';
+import { resolve, dirname } from 'path';
 import { gray, green, underline } from 'colorette';
-
-import { UIHelper } from './helper/PromptHelper';
+import parseArgs from 'minimist';
 import { buiInQuestions } from './config/buiInQuestions';
-import { TemplateHelper } from './helper/TemplateHelper';
-import { getAllFiles, logAndFail } from './util/helper.util';
-import { CreateOptions } from './shared/create';
 import { AfterHookHelper } from './helper/AfterHookHelper';
+import { UIHelper } from './helper/PromptHelper';
+import { TemplateHelper } from './helper/TemplateHelper';
+import type { CreateOptions } from './shared/create';
+import { getAllFiles, logAndFail } from './util/helper.util';
 
 export const create = async (options: CreateOptions) => {
     try {
         // Prepare interactive ui engine
         const uiHelper = new UIHelper();
 
+        // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
         uiHelper.registerPrompt('search-list', require('inquirer-search-list'));
 
         // Expose internal instance for modifications
@@ -33,7 +33,7 @@ export const create = async (options: CreateOptions) => {
 
         // Check if first param was given -> first param is the creation path. Since we do not require any questions to be set this needs to be required.
         if (!createPath) {
-            throw logAndFail(
+            logAndFail(
                 'No create path was given.',
                 `Script usage: ${gray('./cli')} ${green('<create_path>')}`,
             );
@@ -44,7 +44,7 @@ export const create = async (options: CreateOptions) => {
 
         // Check if create path is empty to prevent accidental overrides
         if (existsSync(resolvedCreatePath) && (await readdir(resolvedCreatePath)).length !== 0) {
-            throw logAndFail('Create path is not empty.');
+            logAndFail('Create path is not empty.');
         }
 
         // Decide if we have a prefix or not
@@ -76,7 +76,7 @@ export const create = async (options: CreateOptions) => {
 
         // expose internal instance for modifications
         if (options.setupTemplateEngine) {
-            //options.setupTemplateEngine(templateHelper);
+            // options.setupTemplateEngine(templateHelper);
         }
 
         // Context aware helper function to create a file creation promise
@@ -100,21 +100,20 @@ export const create = async (options: CreateOptions) => {
                 const sourceFileStats = await stat(resolvedSourceFilePath);
 
                 // Parse them to unix
-                var targetFileUnixPermissions =
-                    '0' + (sourceFileStats.mode & parseInt('777', 8)).toString(8);
+                const targetFileUnixPermissions = '0' + (sourceFileStats.mode && 0o777).toString(8);
 
                 // Render file content. Give only filePath since the engine is already template root aware
                 const renderedFileContent = await templateHelper.renderFile(filePath);
 
                 // Write file with rendered content
-                await writeFile(resolvedTargetFilePath, renderedFileContent, 'utf-8');
+                await writeFile(resolvedTargetFilePath, renderedFileContent, 'utf8');
 
                 // Apply unix permissions to newly created files
                 await chmod(resolvedTargetFilePath, targetFileUnixPermissions);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     // Catch here to have a filePath context in the error message
-                    throw logAndFail(
+                    logAndFail(
                         `Unexpected error occurred during the processing of ${underline(filePath)}`,
                         error.message,
                     );
@@ -129,7 +128,7 @@ export const create = async (options: CreateOptions) => {
 
         // Iterate the template directory and build a promise array to process the files
         const createRenderedFilesPromises = (await getAllFiles(resolvedTemplateDirectory)).map(
-            filePath => createRenderedFile(filePath),
+            async filePath => await createRenderedFile(filePath),
         );
 
         // Start all promises
@@ -139,8 +138,11 @@ export const create = async (options: CreateOptions) => {
         if (options.afterCreationHook) {
             // Filter some options we don't want to expose
             const {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 setupInteractiveUI,
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 setupTemplateEngine,
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 afterCreationHook,
                 ...filteredOptions
             } = options;
@@ -155,17 +157,17 @@ export const create = async (options: CreateOptions) => {
 
             await options.afterCreationHook({
                 // Function to return the helper class instance with possibility to define options
-                getAfterHookHelper: options =>
-                    new AfterHookHelper(afterHookCreationObject, options),
+                getAfterHookHelper: afterCreationHookOptions =>
+                    new AfterHookHelper(afterHookCreationObject, afterCreationHookOptions),
                 ...afterHookCreationObject,
             });
         }
     } catch (error: unknown) {
         // Catch everything else and log it nice
         if (error instanceof Error) {
-            throw logAndFail('Unexpected error occurred', error.message);
+            logAndFail('Unexpected error occurred', error.message);
         }
 
-        throw logAndFail('Unexpected error occurred');
+        logAndFail('Unexpected error occurred');
     }
 };

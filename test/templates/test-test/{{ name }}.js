@@ -1,1 +1,1 @@
-const hello = () => '{{license}}';
+export const hello = () => '{{license}}';
