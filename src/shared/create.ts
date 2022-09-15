@@ -1,12 +1,11 @@
+import { BuildInQuestions } from '../config/buiInQuestions';
 import { AfterHookHelper } from '../helper/AfterHookHelper';
 import { UIHelper } from '../helper/PromptHelper';
 import { TemplateHelper } from '../helper/TemplateHelper';
 
 export interface CreateOptions {
-    /** Name of the questions to be asked in order */
-    questionsSelectors?: string[];
-    /** Exposed the internal used interactive UI engine helper for modifications */
-    setupInteractiveUI?: (engine: UIHelper) => void;
+    /** Exposed the internal used interactive UI engine helper for modifications and buildInQuestions to be used */
+    setupInteractiveUI?: (engine: UIHelper, buildInQuestions: BuildInQuestions) => void;
     /** Exposed the internal used template engine helper for modifications */
     setupTemplateEngine?: (engine: TemplateHelper) => void;
     /** A directory or an array of directories from where to resolve included templates. If it's an array, the files are looked up in the order they occur in the array. Defaults to the selected templates directory */

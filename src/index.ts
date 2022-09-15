@@ -5,7 +5,7 @@ import { chmod, mkdir, readdir, stat, writeFile } from 'fs/promises';
 import { gray, green, underline } from 'colorette';
 
 import { UIHelper } from './helper/PromptHelper';
-import { defaultQuestions } from './config/defaultQuestions';
+import { buiInQuestions } from './config/buiInQuestions';
 import { TemplateHelper } from './helper/TemplateHelper';
 import { getAllFiles, logAndFail } from './util/helper.util';
 import { CreateOptions } from './shared/create';
@@ -16,12 +16,11 @@ export const create = async (options: CreateOptions) => {
         // Prepare interactive ui engine
         const uiHelper = new UIHelper();
 
-        // Register build in questions
-        uiHelper.registerQuestions(defaultQuestions);
+        uiHelper.registerPrompt('search-list', require('inquirer-search-list'));
 
         // Expose internal instance for modifications
         if (options.setupInteractiveUI) {
-            options.setupInteractiveUI(uiHelper);
+            options.setupInteractiveUI(uiHelper, buiInQuestions);
         }
 
         // Parse args for mixed use, template selection and creation path
@@ -65,7 +64,7 @@ export const create = async (options: CreateOptions) => {
         }
 
         // Prompt all selected questions. Pass down initialAnswers from yargs for mix use
-        const answers = await uiHelper.prompt(options.questionsSelectors, initialAnswers);
+        const answers = await uiHelper.prompt(initialAnswers);
 
         // Prepare template engine
         const templateHelper = new TemplateHelper({
@@ -84,7 +83,9 @@ export const create = async (options: CreateOptions) => {
         const createRenderedFile = async (filePath: string) => {
             try {
                 // Render file path to support templating in the paths.
-                const renderedFilePath = await templateHelper.parseAndRender(filePath);
+                const renderedFilePath = (
+                    (await templateHelper.parseAndRender(filePath)) as string
+                ).replace(/\.liquid$/u, '');
 
                 // Resolve source file path with provided resolved template directory
                 const resolvedSourceFilePath = resolve(resolvedTemplateDirectory, filePath);

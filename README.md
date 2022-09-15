@@ -77,14 +77,13 @@ declare module 'inquirer' {
 }
 
 create({
-    questionsSelectors: ['name', 'description', 'license'],
     templatesDirectory: resolve(__dirname, 'templates'),
     templatesPrefix: 'test-',
     defaultTemplate: 'test',
     partials: resolve(__dirname, 'templates', 'partials'),
     layouts: resolve(__dirname, 'templates', 'layouts'),
-    setupInteractiveUI: engine => {
-        // exposes the internal used interactive UI engine helper for modifications
+    setupInteractiveUI: (engine, buildInQuestions) => {
+        // exposes the internal used interactive UI engine helper and build in questions for modifications/usage
         engine.registerPrompt('autocomplete', autocomplete);
 
         // This is just to show this function you can also combine this with registerQuestions
@@ -94,10 +93,12 @@ create({
                 message: 'Message was overridden?',
                 name: 'name',
             },
-            true,
         );
 
         engine.registerQuestions([
+            buildInQuestions.name,
+            buildInQuestions.description,
+            buildInQuestions.license,
             {
                 type: 'input',
                 message: 'World?',
@@ -126,7 +127,7 @@ create({
 
 ### setupInteractiveUI
 
-Setup function that exposes the internal used helper instance for modifications. Gets [UIHelper](#UIHelper) as parameter
+Setup function that exposes the internal used helper instance and build in questions for modifications/usage. Gets [UIHelper](#UIHelper) and a indexed object of the [inquire](https://www.npmjs.com/package/inquirer) question type as parameter. See [build in questions](#build-in-questions)
 
 ### setupTemplateEngine
 
@@ -144,8 +145,6 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 ### CreateOptions
 
--   `questionsSelectors` - What questions to ask in what order. See [Build in questions](#Build in questions)
-
 -   `templatesDirectory` - Directory for template lookup
 
 -   `templatesPrefix` - Prefix for template lookup. Can be useful if you want to mix other directories in the template directory.
@@ -156,7 +155,7 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 -   `layouts` - layouts directory. See [partials-and-layouts](https://liquidjs.com/tutorials/partials-and-layouts.html)
 
--   `setupInteractiveUI` - Exposed the internal used interactive UI engine helper for modifications. See [setupInteractiveUI](#setupInteractiveUI)
+-   `setupInteractiveUI` - Exposed the internal used interactive UI engine helper and build in questions for modifications/usage. See [setupInteractiveUI](#setupInteractiveUI) and [build in questions](#build-in-questions).
 
 -   `setupTemplateEngine` - Exposed the internal used template engine helper for modifications. See [setupTemplateEngine](#setupIsetupTemplateEnginenteractiveUI)
 
@@ -205,6 +204,10 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 -   `initGit` - Initialize a empty git repository.
 
 -   `installDependencies` - Installs all dependencies with the configured package manager. See [AfterCreationHookOptions](#AfterCreationHookOptions)
+
+## Templating
+
+For templating this pack internally use [liquidjs](https://liquidjs.com/).
 
 ## Build in questions
 
@@ -263,12 +266,6 @@ Contributions are what make the open source community such an amazing place to l
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-<!-- TODO -->
-
-## TODOs:
-
--   [ ] Make the types on some point safer
 
 <!-- CONTACT -->
 
