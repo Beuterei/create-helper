@@ -1,6 +1,7 @@
 import { DistinctQuestionModified } from '../shared/inquirer';
 import spdxLicenseList from '@ovyerus/licenses';
 
+// declare module inquire to add the new question type
 declare module 'inquirer' {
     interface QuestionMap<T> {
         'search-list': ListQuestionOptions<T>;
@@ -8,7 +9,9 @@ declare module 'inquirer' {
 }
 
 export interface BuildInQuestions {
-    [index: string]: DistinctQuestionModified;
+    name: DistinctQuestionModified;
+    description: DistinctQuestionModified;
+    license: DistinctQuestionModified;
 }
 
 // Export all default questions to register
