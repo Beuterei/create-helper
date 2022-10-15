@@ -26,5 +26,7 @@ jobs:
         run: npm run build
       - name: Run linter
         run: npm run lint
+      - name: Run formatter
+        run: npm run format
       - name: Run tests
         run: npm test
