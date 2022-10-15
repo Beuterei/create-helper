@@ -2,6 +2,7 @@ name: QA Checks
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   testing:
