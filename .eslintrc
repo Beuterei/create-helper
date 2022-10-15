@@ -18,7 +18,7 @@
         },
         {
             "extends": ["@beuluis/eslint-config/yaml"],
-            "files": "*.yaml"
+            "files": "*.{yaml,yml}"
         },
         {
             "extends": ["@beuluis/eslint-config/jest"],
