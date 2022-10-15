@@ -6,7 +6,7 @@ on:
 
 jobs:
   testing:
-    uses: ./qa-check.yml
+    uses: .github/workflows/qa-check.yml
 
   publish-npm:
     needs: testing
