@@ -25,11 +25,17 @@ export const create = async (options: CreateOptions) => {
 
         // Parse args for mixed use, template selection and creation path
         // Also filter the resulting object from yargs to prevent pollution later in the initial answers
+        const parsedArguments = parseArgs(process.argv.slice(2));
         const {
             _: [originalCreatePath],
             template,
-            ...initialAnswers
-        } = parseArgs(process.argv.slice(2), options.argumentParsingOptions);
+            ...initialAnswerArguments
+        } = parsedArguments;
+
+        // Pass the answer arguments to be parsed
+        const initialAnswers = options.argumentAnswerParsing
+            ? options.argumentAnswerParsing(initialAnswerArguments)
+            : initialAnswerArguments;
 
         // Check if first param was given -> first param is the creation path. Since we do not require any questions to be set this needs to be required.
         if (!originalCreatePath) {

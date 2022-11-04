@@ -82,8 +82,16 @@ create({
     defaultTemplate: 'test',
     partials: resolve(__dirname, 'templates', 'partials'),
     layouts: resolve(__dirname, 'templates', 'layouts'),
-    argumentParsingOptions: {
-        boolean: ['isEarthling'],
+    argumentAnswerParsing: toParseAnswerArguments => {
+        const result = toParseAnswerArguments;
+
+        // Only map the argument isEarthling to a JS boolean if provided
+        // You probably want to do this for every boolean type to use non interactive mode correctly
+        if ('isEarthling' in result) {
+            result.isEarthling = Boolean(result.isEarthling);
+        }
+
+        return result;
     },
     setupInteractiveUI: (engine, buildInQuestions) => {
         // exposes the internal used interactive UI engine helper and build in questions for modifications/usage
@@ -158,9 +166,38 @@ Setup function that exposes the internal used helper instance for modifications.
 
 Hook run after all files are copied. Gets [AfterCreationHookObject](#AfterCreationHookObject) as parameter
 
-### argumentParsingOptions
+### argumentAnswerParsing
 
-Has the ability define the parsing options for the arguments read from the command to be taken in as initial answers to the questions. See [Minimist Cheatsheet](https://devhints.io/minimist) for option details.
+Function to parse/modify argument from the command line. Good for mapping falsy value to JS false.
+
+```typescript
+void create({
+    argumentAnswerParsing: toParseAnswerArguments => {
+        const result = toParseAnswerArguments;
+
+        if ('isEarthling' in result) {
+            result.isEarthling = Boolean(result.isEarthling);
+        }
+
+        return result;
+    },
+});
+```
+
+```bash
+npm create something --isEarthling
+```
+
+Results in `{ isEarthling: true }`.
+
+```bash
+npm create something --isEarthling 0 # or other falsy values
+```
+
+Results in `{ isEarthling: false }`.
+
+We need to do enable an explicit true/false like that since simply not providing `--isEarthling` is confusion the library.
+There is no way to tell if you simply want it to be traded as `false` or not answered to trigger the prompting.
 
 ### getAfterHookHelper
 
@@ -188,7 +225,7 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 -   `afterCreationHook` - Hook run after all files are copied. See [afterCreationHook](#afterCreationHook)
 
--   `argumentParsingOptions` - Options to define how arguments from the command are parsed. See [Minimist Cheatsheet](https://devhints.io/minimist) for option details
+-   `argumentAnswerParsing` - Function to parse/modify argument from the command line. Good for mapping falsy value to JS false.
 
 -   `modifyCreatePath` - Dangerous option: Gets the user selected create path to modify. Returned string will be used as new create path. Can be useful for temp directories or already full paths in certain situations
 

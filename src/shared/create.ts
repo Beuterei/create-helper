@@ -1,8 +1,11 @@
-import type { Opts } from 'minimist';
 import type { BuildInQuestions } from '../config/buildInQuestions';
 import type { AfterHookHelper } from '../helper/AfterHookHelper';
 import type { UIHelper } from '../helper/PromptHelper';
 import type { TemplateHelper } from '../helper/TemplateHelper';
+
+interface AnswerArguments {
+    [index: string]: unknown;
+}
 
 export interface CreateOptions {
     /**
@@ -10,9 +13,9 @@ export interface CreateOptions {
      */
     afterCreationHook?: (afterCreationHookObject: AfterCreationHookObject) => Promise<void>;
     /**
-     * Options to define how arguments from the command are parsed
+     * Function to parse/modify argument from the command line. Good for mapping falsy value to JS false.
      */
-    argumentParsingOptions?: Opts;
+    argumentAnswerParsing?: (toParseAnswerArguments: AnswerArguments) => AnswerArguments;
     /**
      * Default template to be used if not specified by arguments
      */
