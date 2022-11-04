@@ -29,10 +29,13 @@ export interface CreateOptions {
      */
     setupTemplateEngine?: (engine: TemplateHelper) => void;
     /**
+     * Regex patterns to ignore while templating files with liquidjs. Default: `[/\.(gif|jpe?g|tiff?|png|webp|bmp)$/u]`
+     */
+    templateIgnorePattern?: RegExp[];
+    /**
      * Directory to lookup template folders
      */
     templatesDirectory: string;
-
     /**
      * Prefix for the template folders
      */

@@ -164,6 +164,8 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 -   `defaultTemplate` - Default template without the prefix.
 
+-   `templateIgnorePattern` - Regex patterns to ignore while templating files with liquidjs. Default: `[/\.(gif|jpe?g|tiff?|png|webp|bmp)$/u]`
+
 -   `partials` - Partials directory. See [partials-and-layouts](https://liquidjs.com/tutorials/partials-and-layouts.html)
 
 -   `layouts` - layouts directory. See [partials-and-layouts](https://liquidjs.com/tutorials/partials-and-layouts.html)
@@ -267,6 +269,8 @@ It will create a project from test templates
         "$schema": "https://json.schemastore.org/package.json"
     }
     ```
+
+-   Seeing something like `Unexpected error occurred during the processing of test.png`? This file cannot be parsed by liquidjs. Try to adapt the `templateIgnorePattern` to ignore those files.
 
 <!-- CONTRIBUTING -->
 

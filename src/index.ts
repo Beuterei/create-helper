@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { chmod, mkdir, readdir, stat, writeFile } from 'fs/promises';
+import { chmod, copyFile, mkdir, readdir, stat, writeFile } from 'fs/promises';
 import { resolve, dirname } from 'path';
 import { gray, green, underline } from 'colorette';
 import parseArgs from 'minimist';
@@ -82,6 +82,11 @@ export const create = async (options: CreateOptions) => {
             // options.setupTemplateEngine(templateHelper);
         }
 
+        // Look if we have tempalte ignore patterns. If not apply defaults
+        const ignorePatters = options.templateIgnorePattern
+            ? options.templateIgnorePattern
+            : [/\.(gif|jpe?g|tiff?|png|webp|bmp)$/u];
+
         // Context aware helper function to create a file creation promise
         const createRenderedFile = async (filePath: string) => {
             try {
@@ -98,6 +103,17 @@ export const create = async (options: CreateOptions) => {
 
                 // Create all parent directories
                 await mkdir(dirname(resolvedTargetFilePath), { recursive: true });
+
+                // Check if we ignore this file for render
+                const ignoreFileRender = ignorePatters.some(pattern => pattern.test(filePath));
+
+                if (ignoreFileRender) {
+                    // Just copy file with rendered file path
+                    await copyFile(resolvedSourceFilePath, resolvedTargetFilePath);
+
+                    // Make early return to not touch content
+                    return;
+                }
 
                 // Get source file stats to catch stuff like execution permissions for scripts
                 const sourceFileStats = await stat(resolvedSourceFilePath);
