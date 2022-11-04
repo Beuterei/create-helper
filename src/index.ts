@@ -3,7 +3,7 @@ import { chmod, copyFile, mkdir, readdir, stat, writeFile } from 'fs/promises';
 import { resolve, dirname } from 'path';
 import { gray, green, underline } from 'colorette';
 import parseArgs from 'minimist';
-import { buiInQuestions } from './config/buiInQuestions';
+import { buildInQuestions } from './config/buildInQuestions';
 import { AfterHookHelper } from './helper/AfterHookHelper';
 import { UIHelper } from './helper/PromptHelper';
 import { TemplateHelper } from './helper/TemplateHelper';
@@ -20,26 +20,33 @@ export const create = async (options: CreateOptions) => {
 
         // Expose internal instance for modifications
         if (options.setupInteractiveUI) {
-            options.setupInteractiveUI(uiHelper, buiInQuestions);
+            options.setupInteractiveUI(uiHelper, buildInQuestions);
         }
 
         // Parse args for mixed use, template selection and creation path
         // Also filter the resulting object from yargs to prevent pollution later in the initial answers
         const {
-            _: [createPath],
+            _: [originalCreatePath],
             template,
             ...initialAnswers
-        } = parseArgs(process.argv.slice(2));
+        } = parseArgs(process.argv.slice(2), options.argumentParsingOptions);
 
         // Check if first param was given -> first param is the creation path. Since we do not require any questions to be set this needs to be required.
-        if (!createPath) {
+        if (!originalCreatePath) {
             logAndFail(
                 'No create path was given.',
                 `Script usage: ${gray('./cli')} ${green('<create_path>')}`,
             );
         }
 
-        // Resolve create path
+        // Modify the create path if option isset
+        let createPath = originalCreatePath;
+        if (options.modifyCreatePath) {
+            createPath = options.modifyCreatePath(originalCreatePath);
+        }
+
+        // Resolve create paths. Also resolve the original for context
+        const resolvedOriginalCreatePath = resolve(process.cwd(), originalCreatePath);
         const resolvedCreatePath = resolve(process.cwd(), createPath);
 
         // Check if create path is empty to prevent accidental overrides
@@ -79,7 +86,7 @@ export const create = async (options: CreateOptions) => {
 
         // expose internal instance for modifications
         if (options.setupTemplateEngine) {
-            // options.setupTemplateEngine(templateHelper);
+            options.setupTemplateEngine(templateHelper);
         }
 
         // Look if we have tempalte ignore patterns. If not apply defaults
@@ -170,6 +177,7 @@ export const create = async (options: CreateOptions) => {
             const afterHookCreationObject = {
                 resolvedCreatePath,
                 resolvedTemplateDirectory,
+                resolvedOriginalCreatePath,
                 createOptions: filteredOptions,
                 answers,
             };

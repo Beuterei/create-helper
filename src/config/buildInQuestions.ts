@@ -15,7 +15,7 @@ export interface BuildInQuestions {
 }
 
 // Export all default questions to register
-export const buiInQuestions: BuildInQuestions = {
+export const buildInQuestions: BuildInQuestions = {
     name: {
         type: 'input',
         message: 'What is the name of your project?',

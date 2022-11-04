@@ -1,4 +1,5 @@
-import type { BuildInQuestions } from '../config/buiInQuestions';
+import type { Opts } from 'minimist';
+import type { BuildInQuestions } from '../config/buildInQuestions';
 import type { AfterHookHelper } from '../helper/AfterHookHelper';
 import type { UIHelper } from '../helper/PromptHelper';
 import type { TemplateHelper } from '../helper/TemplateHelper';
@@ -9,6 +10,10 @@ export interface CreateOptions {
      */
     afterCreationHook?: (afterCreationHookObject: AfterCreationHookObject) => Promise<void>;
     /**
+     * Options to define how arguments from the command are parsed
+     */
+    argumentParsingOptions?: Opts;
+    /**
      * Default template to be used if not specified by arguments
      */
     defaultTemplate: string;
@@ -16,6 +21,10 @@ export interface CreateOptions {
      * A directory or an array of directories from where to resolve layout templates. If it's an array, the files are looked up in the order they occur in the array. Defaults to the selected templates directory
      */
     layouts?: string[] | string;
+    /**
+     * Dangerous option: Gets the user selected create path to modify. Returned string will be used as new create path. Can be useful for temp directories or already full paths in certain situations
+     */
+    modifyCreatePath?: (originalCreatePath: string) => string;
     /**
      * A directory or an array of directories from where to resolve included templates. If it's an array, the files are looked up in the order they occur in the array. Defaults to the selected templates directory
      */
@@ -69,6 +78,10 @@ export interface AfterCreationHookObject {
      * Used create path
      */
     resolvedCreatePath: string;
+    /**
+     * Original create path before modification
+     */
+    resolvedOriginalCreatePath: string;
     /**
      * Used template directory
      */

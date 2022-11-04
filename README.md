@@ -82,6 +82,9 @@ create({
     defaultTemplate: 'test',
     partials: resolve(__dirname, 'templates', 'partials'),
     layouts: resolve(__dirname, 'templates', 'layouts'),
+    argumentParsingOptions: {
+        boolean: ['isEarthling'],
+    },
     setupInteractiveUI: (engine, buildInQuestions) => {
         // exposes the internal used interactive UI engine helper and build in questions for modifications/usage
         engine.registerPrompt('autocomplete', autocomplete);
@@ -107,6 +110,11 @@ create({
                 name: 'from',
                 message: 'Select a state to travel from',
                 source: (answersSoFar, input) => myApi.searchStates(input),
+            },
+            {
+                type: 'confirm',
+                name: 'isEarthling',
+                message: 'Are you from earth?',
             },
         ]);
     },
@@ -150,6 +158,10 @@ Setup function that exposes the internal used helper instance for modifications.
 
 Hook run after all files are copied. Gets [AfterCreationHookObject](#AfterCreationHookObject) as parameter
 
+### argumentParsingOptions
+
+Has the ability define the parsing options for the arguments read from the command to be taken in as initial answers to the questions. See [Minimist Cheatsheet](https://devhints.io/minimist) for option details.
+
 ### getAfterHookHelper
 
 Get function to get a helper to run predefined actions. Gets [AfterCreationHookOptions](#AfterCreationHookOptions) as parameter and returns []()
@@ -175,6 +187,10 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 -   `setupTemplateEngine` - Exposed the internal used template engine helper for modifications. See [setupTemplateEngine](#setupIsetupTemplateEnginenteractiveUI)
 
 -   `afterCreationHook` - Hook run after all files are copied. See [afterCreationHook](#afterCreationHook)
+
+-   `argumentParsingOptions` - Options to define how arguments from the command are parsed. See [Minimist Cheatsheet](https://devhints.io/minimist) for option details
+
+-   `modifyCreatePath` - Dangerous option: Gets the user selected create path to modify. Returned string will be used as new create path. Can be useful for temp directories or already full paths in certain situations
 
 ### UIHelper
 
