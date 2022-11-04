@@ -87,13 +87,11 @@ create({
         engine.registerPrompt('autocomplete', autocomplete);
 
         // This is just to show this function you can also combine this with registerQuestions
-        engine.registerQuestion(
-            {
-                type: 'input',
-                message: 'Message was overridden?',
-                name: 'name',
-            },
-        );
+        engine.registerQuestion({
+            type: 'input',
+            message: 'Message was overridden?',
+            name: 'name',
+        });
 
         engine.registerQuestions([
             buildInQuestions.name,
@@ -123,6 +121,21 @@ create({
         await helper.runCommand('echo', ['hello world']);
     },
 });
+```
+
+### Template variable
+
+A `template` variable is always injected into the answers hash to use it in answer validation or when conditions.
+
+```typescript
+engine.registerQuestions([
+    {
+        type: 'input',
+        message: 'World?',
+        name: 'hello',
+        when: ({ template }) => template === 'abc',
+    },
+]);
 ```
 
 ### setupInteractiveUI

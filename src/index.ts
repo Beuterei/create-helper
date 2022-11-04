@@ -64,7 +64,10 @@ export const create = async (options: CreateOptions) => {
         }
 
         // Prompt all selected questions. Pass down initialAnswers from yargs for mix use
-        const answers = await uiHelper.prompt(initialAnswers);
+        const answers = await uiHelper.prompt({
+            ...initialAnswers,
+            template: template ? template : options.defaultTemplate,
+        });
 
         // Prepare template engine
         const templateHelper = new TemplateHelper({
