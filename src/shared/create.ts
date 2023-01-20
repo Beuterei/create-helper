@@ -1,11 +1,14 @@
 import type { BuildInQuestions } from '../config/buildInQuestions';
 import type { AfterHookHelper } from '../helper/AfterHookHelper';
+import type { HookHelper } from '../helper/HookHelper';
 import type { UIHelper } from '../helper/PromptHelper';
 import type { TemplateHelper } from '../helper/TemplateHelper';
 
-interface AnswerArguments {
+interface Answers {
     [index: string]: unknown;
 }
+
+type AnswerArguments = Answers;
 
 export interface CreateOptions {
     /**
@@ -16,6 +19,10 @@ export interface CreateOptions {
      * Function to parse/modify argument from the command line. Good for mapping falsy value to JS false.
      */
     argumentAnswerParsing?: (toParseAnswerArguments: AnswerArguments) => AnswerArguments;
+    /**
+     * Hook run before all files are copied
+     */
+    beforeCreationHook?: (beforeCreationHookObject: BeforeCreationHookObject) => Promise<Answers>;
     /**
      * Default template to be used if not specified by arguments
      */
@@ -61,11 +68,11 @@ export interface AfterCreationHookOptions {
     packageManager: 'npm' | 'yarn';
 }
 
-export interface AfterCreationHookObject {
+export interface HookHelperObject {
     /**
      * All given answers
      */
-    answers: { [index: string]: unknown };
+    answers: Answers;
     /**
      * Used create options
      */
@@ -73,10 +80,6 @@ export interface AfterCreationHookObject {
         CreateOptions,
         'afterCreationHook' | 'setupInteractiveUI' | 'setupTemplateEngine'
     >;
-    /**
-     * Helper to do some predefined actions
-     */
-    getAfterHookHelper: (afterCreationHookOptions?: AfterCreationHookOptions) => AfterHookHelper;
     /**
      * Used create path
      */
@@ -89,4 +92,18 @@ export interface AfterCreationHookObject {
      * Used template directory
      */
     resolvedTemplateDirectory: string;
+}
+
+export interface AfterCreationHookObject extends HookHelperObject {
+    /**
+     * Helper to do some predefined actions
+     */
+    getAfterHookHelper: (afterCreationHookOptions?: AfterCreationHookOptions) => AfterHookHelper;
+}
+
+export interface BeforeCreationHookObject extends HookHelperObject {
+    /**
+     * Helper to do some predefined actions
+     */
+    getBeforeHookHelper: () => HookHelper;
 }

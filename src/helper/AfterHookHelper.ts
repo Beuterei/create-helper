@@ -1,19 +1,16 @@
-import type { SpawnOptions } from 'child_process';
 import { blueBright } from 'colorette';
-import type { AfterCreationHookObject, AfterCreationHookOptions } from '../shared/create';
-import { execute } from '../util/command.util';
+import type { AfterCreationHookOptions, HookHelperObject } from '../shared/create';
+import { HookHelper } from './HookHelper';
 
-export class AfterHookHelper {
+export class AfterHookHelper extends HookHelper {
     private readonly options: AfterCreationHookOptions;
 
     public constructor(
         // Make the hook object available to have context
-        private readonly afterCreationHookObject: Omit<
-            AfterCreationHookObject,
-            'getAfterHookHelper'
-        >,
+        hookHelperObject: HookHelperObject,
         options?: AfterCreationHookOptions,
     ) {
+        super(hookHelperObject);
         // Deconstruct options to apply defaults
         const { packageManager = 'npm' } = options ?? {};
 
@@ -22,16 +19,6 @@ export class AfterHookHelper {
             ...options,
             packageManager,
         };
-    }
-
-    /**
-     * Runs a command in the new created project
-     */
-    public async runCommand(command: string, args: string[] = [], options?: SpawnOptions) {
-        return await execute(command, args, {
-            cwd: this.afterCreationHookObject.resolvedCreatePath,
-            ...options,
-        });
     }
 
     /**

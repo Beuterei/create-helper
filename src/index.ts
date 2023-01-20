@@ -5,6 +5,7 @@ import { gray, green, underline } from 'colorette';
 import parseArgs from 'minimist';
 import { buildInQuestions } from './config/buildInQuestions';
 import { AfterHookHelper } from './helper/AfterHookHelper';
+import { HookHelper } from './helper/HookHelper';
 import { UIHelper } from './helper/PromptHelper';
 import { TemplateHelper } from './helper/TemplateHelper';
 import type { CreateOptions } from './shared/create';
@@ -60,6 +61,9 @@ export const create = async (options: CreateOptions) => {
             logAndFail('Create path is not empty.');
         }
 
+        // Create targetDirectory
+        await mkdir(resolvedCreatePath, { recursive: true });
+
         // Decide if we have a prefix or not
         const templatePrefix = options.templatesPrefix ? options.templatesPrefix : '';
 
@@ -77,10 +81,39 @@ export const create = async (options: CreateOptions) => {
         }
 
         // Prompt all selected questions. Pass down initialAnswers from yargs for mix use
-        const answers = await uiHelper.prompt({
+        let answers = await uiHelper.prompt({
             ...initialAnswers,
             template: template ? template : options.defaultTemplate,
         });
+
+        // Filter some options we don't want to expose to hooks
+        const {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            setupInteractiveUI,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            setupTemplateEngine,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            afterCreationHook,
+            ...filteredOptions
+        } = options;
+
+        // Check if the before creation hook was defined
+        if (options.beforeCreationHook) {
+            // Build after hook object to be used by the helper and hook itself
+            const hookHelperObject = {
+                resolvedCreatePath,
+                resolvedTemplateDirectory,
+                resolvedOriginalCreatePath,
+                createOptions: filteredOptions,
+                answers,
+            };
+
+            answers = await options.beforeCreationHook({
+                // Function to return the helper class instance with possibility to define options
+                getBeforeHookHelper: () => new HookHelper(hookHelperObject),
+                ...hookHelperObject,
+            });
+        }
 
         // Prepare template engine
         const templateHelper = new TemplateHelper({
@@ -168,19 +201,8 @@ export const create = async (options: CreateOptions) => {
 
         // Check if the after creation hook was defined
         if (options.afterCreationHook) {
-            // Filter some options we don't want to expose
-            const {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                setupInteractiveUI,
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                setupTemplateEngine,
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                afterCreationHook,
-                ...filteredOptions
-            } = options;
-
             // Build after hook object to be used by the helper and hook itself
-            const afterHookCreationObject = {
+            const hookHelperObject = {
                 resolvedCreatePath,
                 resolvedTemplateDirectory,
                 resolvedOriginalCreatePath,
@@ -191,8 +213,8 @@ export const create = async (options: CreateOptions) => {
             await options.afterCreationHook({
                 // Function to return the helper class instance with possibility to define options
                 getAfterHookHelper: afterCreationHookOptions =>
-                    new AfterHookHelper(afterHookCreationObject, afterCreationHookOptions),
-                ...afterHookCreationObject,
+                    new AfterHookHelper(hookHelperObject, afterCreationHookOptions),
+                ...hookHelperObject,
             });
         }
     } catch (error: unknown) {

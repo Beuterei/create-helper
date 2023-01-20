@@ -76,6 +76,8 @@ declare module 'inquirer' {
     }
 }
 
+const fetchTotallyDynamicReactVersion = () => '1.0.0';
+
 create({
     templatesDirectory: resolve(__dirname, 'templates'),
     templatesPrefix: 'test-',
@@ -130,6 +132,15 @@ create({
         engine.registerFilter('upper', v => v.toUpperCase());
         engine.registerTag('upper', myTag);
     },
+    beforeCreationHook: async ({ getBeforeHookHelper, answers }) => {
+        console.log(`I run before ${answers.template} scaffold being created.`);
+
+        const helper = getBeforeHookHelper();
+        await helper.runCommand('echo', ['hello world']);
+
+        // Could be used to inject some dynamic values
+        return { ...answers, reactVersion: fetchTotallyDynamicReactVersion() };
+    },
     afterCreationHook: async ({ getAfterHookHelper, answers }) => {
         console.log(`${answers.name} is a perfect name for a new project!`);
 
@@ -170,6 +181,10 @@ Hook run after all files are copied. Gets [AfterCreationHookObject](#AfterCreati
 
 Function to parse/modify argument from the command line. Good for mapping falsy value to JS false.
 
+### beforeCreationHook
+
+Hook run before all files are copied. Gets [BeforeCreationHookObject](#BeforeCreationHookObject) as parameter and returns new answerers to be used
+
 ```typescript
 void create({
     argumentAnswerParsing: toParseAnswerArguments => {
@@ -201,7 +216,11 @@ There is no way to tell if you simply want it to be traded as `false` or not ans
 
 ### getAfterHookHelper
 
-Get function to get a helper to run predefined actions. Gets [AfterCreationHookOptions](#AfterCreationHookOptions) as parameter and returns []()
+Get function to get a helper to run predefined actions. Gets [AfterCreationHookOptions](#AfterCreationHookOptions) as parameter and returns [AfterHookHelper](#AfterHookHelper)
+
+### getBeforeHookHelper
+
+Get function to get a helper to run predefined actions. Returns [HookHelper](#HookHelper)
 
 ## Interfaces
 
@@ -226,6 +245,8 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 -   `afterCreationHook` - Hook run after all files are copied. See [afterCreationHook](#afterCreationHook)
 
 -   `argumentAnswerParsing` - Function to parse/modify argument from the command line. Good for mapping falsy value to JS false.
+
+-   `beforeCreationHook` - Hook run before all files are copied. See [beforeCreationHook](#beforeCreationHook)
 
 -   `modifyCreatePath` - Dangerous option: Gets the user selected create path to modify. Returned string will be used as new create path. Can be useful for temp directories or already full paths in certain situations
 
@@ -253,9 +274,7 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 -   `packageManager` - Packagemanager to be used for actions
 
-### AfterCreationHookObject
-
--   `getAfterHookHelper` - Get function to configure the after hook helper and to run predefined actions. See [getAfterHookHelper](#getAfterHookHelper)
+### HookHelperObject
 
 -   `resolvedCreatePath` - Used create path
 
@@ -265,13 +284,23 @@ Get function to get a helper to run predefined actions. Gets [AfterCreationHookO
 
 -   `answers` - All given answers
 
-### AfterHookHelper
+### AfterCreationHookObject extends [HookHelperObject](#HookHelperObject)
 
--   `runCommand` - runs a command with the new project root ad cwd.
+-   `getAfterHookHelper` - Get function to configure the after hook helper and to run predefined actions. See [getAfterHookHelper](#getAfterHookHelper)
+
+### BeforeCreationHookObject extends [HookHelperObject](#HookHelperObject)
+
+-   `getBeforeHookHelper` - Get function to configure the before hook helper and to run predefined actions. See [getBeforeHookHelper](#getBeforeHookHelper)
+
+### AfterHookHelper extends [HookHelper](#HookHelper)
 
 -   `initGit` - Initialize a empty git repository.
 
 -   `installDependencies` - Installs all dependencies with the configured package manager. See [AfterCreationHookOptions](#AfterCreationHookOptions)
+
+### HookHelper
+
+-   `runCommand` - runs a command with the new project root ad cwd.
 
 ## Templating
 

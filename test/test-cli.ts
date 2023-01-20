@@ -14,10 +14,18 @@ create({
             buildInQuestions.license,
         ]);
     },
+    beforeCreationHook: async ({ getBeforeHookHelper, answers }) => {
+        const helper = getBeforeHookHelper();
+        await helper.runCommand('echo', ['hello world']);
+
+        console.log(`I run before ${answers.template} scaffold being created.`);
+
+        return { ...answers, test: 'Yes!'} ;
+    },
     afterCreationHook: async ({ getAfterHookHelper, answers }) => {
         const helper = getAfterHookHelper();
         await helper.runCommand('echo', ['hello world']);
 
-        console.log(`You generated a ${answers.template} scaffold`);
+        console.log(`You generated a ${answers.template} scaffold. Did the test var get injected? ${answers.test}`);
     },
 });
