@@ -1,6 +1,6 @@
 {
   "name": "@beuluis/create-helper",
-  "version": "1.4.0",
+  "version": "1.3.1",
   "description": "A helper to create a create-something app",
   "main": "dist/index.js",
   "bin": "dist/index.js",
