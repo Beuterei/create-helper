@@ -11,4 +11,3 @@ on:
 jobs:
   testing:
     uses: beuluis/reusable-workflows/.github/workflows/qa-node-testing.yml@main
-
