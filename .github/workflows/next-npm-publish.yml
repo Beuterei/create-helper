@@ -1,6 +1,7 @@
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
 
 jobs:
   testing:
@@ -9,4 +10,6 @@ jobs:
   publish-npm:
     needs: testing
     uses: beuluis/reusable-workflows/.github/workflows/publish-npm.yml@main
+    with:
+      dist_tag: 'next'
     secrets: inherit
