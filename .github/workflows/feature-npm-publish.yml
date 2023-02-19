@@ -1,0 +1,26 @@
+name: 'Handling feature dist-tag'
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened # pr is created
+      - reopened # pr is reopened
+      - synchronize # pr got new commit
+      - closed # pr is merged/closed
+
+jobs:
+  publish-feature-tag:
+    if: ${{ github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize' }}
+    uses: beuluis/reusable-workflows/.github/workflows/publish-npm.yml@main
+    with:
+      dist_tag: ${{ github.head_ref }}
+    secrets: inherit
+
+  remove-feature-tag:
+    if: ${{ github.event.action == 'closed' }}
+    uses: beuluis/reusable-workflows/.github/workflows/remove-dist-tag-npm.yml@main
+    with:
+      dist_tag: ${{ github.head_ref }}
+    secrets: inherit
