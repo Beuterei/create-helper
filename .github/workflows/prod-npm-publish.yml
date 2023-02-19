@@ -1,3 +1,5 @@
+name: 'Publish pack with latest dist-tag'
+
 on:
   release:
     types: [created]
