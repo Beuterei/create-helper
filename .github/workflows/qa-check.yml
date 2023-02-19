@@ -5,10 +5,10 @@ on:
   workflow_call:
   push:
     branches:
-      - ${{ github.event.repository.default_branch }}
+      - main
   pull_request:
     branches:
-      - ${{ github.event.repository.default_branch }}
+      - main
 
 jobs:
   testing:

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - ${{ github.event.repository.default_branch }}
+      - main
 
 # TODO: use np for release template. basically it should be possible to use 1.4.1 as next version and then later tag it and release
 jobs:

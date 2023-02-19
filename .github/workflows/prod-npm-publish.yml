@@ -2,7 +2,8 @@ name: 'Publish pack with latest dist-tag'
 
 on:
   release:
-    types: [created]
+    types:
+      - created
 
 jobs:
   testing:
