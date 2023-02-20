@@ -11,8 +11,17 @@ on:
       - closed # pr is merged/closed
 
 jobs:
-  publish-feature-tag:
+  check-pr:
     if: ${{ github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize' }}
+    uses: bahmutov/should-run-github-action@v1
+    id: check-checkbox
+    with:
+      checkbox_text: 'Publish to registry'
+    env:
+      GITHUB_EVENT: ${{ toJson(github.event) }}
+
+  publish-feature-tag:
+    if: ${{ steps.check-checkbox.outputs.shouldRun }}
     uses: beuluis/reusable-workflows/.github/workflows/publish-npm.yml@main
     with:
       dist_tag: ${{ github.head_ref }}
