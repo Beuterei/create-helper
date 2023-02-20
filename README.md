@@ -32,6 +32,14 @@ A helper to create your own `create-something` app. Inspired by [create-initiali
 npm i @beuluis/create-helper
 ```
 
+### Unstable installation
+
+The `next` dist-tag is kept in sync with the latest commit on main. So this contains always the latest changes but is highly unstable.
+
+```bash
+npm i @beuluis/create-helper@next
+```
+
 ## Usage
 
 This pack is meant to be used with the [npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) which runs the main bin of a pack when provided as parameter.
