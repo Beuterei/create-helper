@@ -9,10 +9,11 @@ on:
       - reopened # pr is reopened
       - synchronize # pr got new commit
       - closed # pr is merged/closed
+      - edited # pr checkbox is edited
 
 jobs:
   check-pr:
-    if: ${{ github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize' }}
+    if: ${{ github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize' || github.event.action == 'edited' }}
     runs-on: ubuntu-latest
     outputs:
       shouldRun: ${{ steps.check-pr.outputs.shouldRun }}
