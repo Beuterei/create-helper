@@ -1,0 +1,16 @@
+name: 'Handling feature dist-tag'
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed # pr is merged/closed
+
+jobs:
+  remove-feature-tag:
+    if: ${{ github.event.action == 'closed' }}
+    uses: beuluis/reusable-workflows/.github/workflows/remove-dist-tag-npm.yml@main
+    with:
+      dist_tag: ${{ github.head_ref }}
+    secrets: inherit
