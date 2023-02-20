@@ -8,7 +8,6 @@ on:
       - opened # pr is created
       - reopened # pr is reopened
       - synchronize # pr got new commit
-      - closed # pr is merged/closed
       - edited # pr checkbox is edited
 
 jobs:
@@ -30,13 +29,6 @@ jobs:
     needs: check-pr
     if: ${{ needs.check-pr.outputs.shouldRun }}
     uses: beuluis/reusable-workflows/.github/workflows/publish-npm.yml@main
-    with:
-      dist_tag: ${{ github.head_ref }}
-    secrets: inherit
-
-  remove-feature-tag:
-    if: ${{ github.event.action == 'closed' }}
-    uses: beuluis/reusable-workflows/.github/workflows/remove-dist-tag-npm.yml@main
     with:
       dist_tag: ${{ github.head_ref }}
     secrets: inherit
