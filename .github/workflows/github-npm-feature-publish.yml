@@ -1,0 +1,23 @@
+name: 'Handling feature dist-tag with github registry'
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened # pr is created
+      - reopened # pr is reopened
+      - synchronize # pr got new commit
+
+jobs:
+  testing:
+    uses: ./.github/workflows/node-qa-testing.yml
+
+  publish-feature-tag:
+    needs: testing
+    permissions:
+      packages: write
+    uses: beuluis/reusable-workflows/.github/workflows/github-npm-publish.yml@main
+    with:
+      dist_tag: ${{ github.head_ref }}
+    secrets: inherit
