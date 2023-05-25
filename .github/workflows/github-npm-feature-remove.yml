@@ -1,4 +1,4 @@
-name: 'Handling feature dist-tag'
+name: 'Handling feature dist-tag removal with github registry'
 
 on:
   pull_request:
@@ -9,8 +9,10 @@ on:
 
 jobs:
   remove-feature-tag:
+    permissions:
+      packages: write
     if: ${{ github.event.action == 'closed' }}
-    uses: beuluis/reusable-workflows/.github/workflows/remove-dist-tag-npm.yml@main
+    uses: beuluis/reusable-workflows/.github/workflows/github-npm-remove-dist-tag.yml@main
     with:
       dist_tag: ${{ github.head_ref }}
     secrets: inherit

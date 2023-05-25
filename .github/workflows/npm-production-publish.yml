@@ -1,0 +1,15 @@
+name: 'Publish pack with latest dist-tag with npm registry'
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  testing:
+    uses: ./.github/workflows/node-qa-testing.yml
+
+  publish-npm:
+    needs: testing
+    uses: beuluis/reusable-workflows/.github/workflows/npm-publish.yml@main
+    secrets: inherit
