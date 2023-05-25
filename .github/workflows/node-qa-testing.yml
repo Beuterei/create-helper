@@ -7,5 +7,3 @@ on:
 jobs:
   testing:
     uses: beuluis/reusable-workflows/.github/workflows/node-qa-testing.yml@main
-    with:
-      test_command: 'npm run test:cov'
