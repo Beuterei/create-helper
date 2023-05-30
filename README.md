@@ -181,6 +181,10 @@ Setup function that exposes the internal used helper instance and build in quest
 
 Setup function that exposes the internal used helper instance for modifications. Gets [TemplateHelper](#TemplateHelper) as parameter
 
+### beforeCreationHook
+
+Hook run before all files are copied. Gets [BeforeCreationHookObject](#BeforeCreationHookObject) as parameter and returns new answerers to be used
+
 ### afterCreationHook
 
 Hook run after all files are copied. Gets [AfterCreationHookObject](#AfterCreationHookObject) as parameter
@@ -188,10 +192,6 @@ Hook run after all files are copied. Gets [AfterCreationHookObject](#AfterCreati
 ### argumentAnswerParsing
 
 Function to parse/modify argument from the command line. Good for mapping falsy value to JS false.
-
-### beforeCreationHook
-
-Hook run before all files are copied. Gets [BeforeCreationHookObject](#BeforeCreationHookObject) as parameter and returns new answerers to be used
 
 ```typescript
 void create({
