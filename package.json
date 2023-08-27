@@ -11,7 +11,6 @@
   "scripts": {
     "test": "npm run test-cli -- --name create-test --description test --license MIT",
     "lint": "eslint .",
-    "format": "prettier . --check",
     "prepack": "npm run build",
     "build": "tsc --build",
     "test-cli": "rm -Rf test/test-out && ts-node test/test-cli.ts test/test-out",
@@ -22,12 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beuluis/create-helper.git"
+    "url": "git+https://github.com/Beuterei/create-helper.git"
   },
   "bugs": {
-    "url": "https://github.com/beuluis/create-helper/issues"
+    "url": "https://github.com/Beuterei/create-helper/issues"
   },
-  "homepage": "https://github.com/beuluis/create-helper#readme",
+  "homepage": "https://github.com/Beuterei/create-helper#readme",
   "author": "Luis Beu <me@luisbeu.de> (https://luisbeu.de/)",
   "license": "MIT",
   "dependencies": {
@@ -40,9 +39,8 @@
     "minimist": "^1.2.6"
   },
   "devDependencies": {
-    "@beuluis/eslint-config": "1.0.2",
+    "@beuluis/eslint-config": "2.0.1",
     "@beuluis/hook-cli": "1.2.1",
-    "@beuluis/prettier-config": "2.0.1",
     "@types/inquirer": "9.0.1",
     "@types/minimist": "1.2.2",
     "@types/node": "18.7.18",
@@ -59,13 +57,8 @@
     "initializer",
     "helper"
   ],
-  "prettier": "@beuluis/prettier-config",
   "lint-staged": {
-    "*.md": [
-      "prettier --write"
-    ],
     "*.{js,ts,json,yml,yaml}": [
-      "prettier --write",
       "eslint"
     ]
   }

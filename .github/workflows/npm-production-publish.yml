@@ -7,9 +7,12 @@ on:
 
 jobs:
   testing:
-    uses: ./.github/workflows/node-qa-testing.yml
+    uses: Beuterei/reusable-workflows/.github/workflows/node-qa-testing.yml@main
+    with:
+      run_jest_coverage: false
+    secrets: inherit
 
   publish-npm:
     needs: testing
-    uses: beuluis/reusable-workflows/.github/workflows/npm-publish.yml@main
+    uses: Beuterei/reusable-workflows/.github/workflows/npm-publish.yml@main
     secrets: inherit

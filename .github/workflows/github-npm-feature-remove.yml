@@ -12,7 +12,7 @@ jobs:
     permissions:
       packages: write
     if: ${{ github.event.action == 'closed' }}
-    uses: beuluis/reusable-workflows/.github/workflows/github-npm-remove-dist-tag.yml@main
+    uses: Beuterei/reusable-workflows/.github/workflows/github-npm-remove-dist-tag.yml@main
     with:
       dist_tag: ${{ github.head_ref }}
     secrets: inherit

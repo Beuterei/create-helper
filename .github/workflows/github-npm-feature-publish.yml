@@ -11,13 +11,18 @@ on:
 
 jobs:
   testing:
-    uses: ./.github/workflows/node-qa-testing.yml
+    permissions:
+      pull-requests: write
+    uses: Beuterei/reusable-workflows/.github/workflows/node-qa-testing.yml@main
+    with:
+      run_jest_coverage: false
+    secrets: inherit
 
   publish-feature-tag:
     needs: testing
     permissions:
       packages: write
-    uses: beuluis/reusable-workflows/.github/workflows/github-npm-publish.yml@main
+    uses: Beuterei/reusable-workflows/.github/workflows/github-npm-publish.yml@main
     with:
       dist_tag: ${{ github.head_ref }}
     secrets: inherit

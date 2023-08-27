@@ -13,9 +13,9 @@
     <br />
     <br />
     ·
-    <a href="https://github.com/beuluis/create-helper/issues">Report Bug</a>
+    <a href="https://github.com/Beuterei/create-helper/issues">Report Bug</a>
     ·
-    <a href="https://github.com/beuluis/create-helper/issues">Request Feature</a>
+    <a href="https://github.com/Beuterei/create-helper/issues">Request Feature</a>
     ·
   </p>
 </p>
@@ -362,33 +362,15 @@ It will create a project from test templates
 
 -   Seeing something like `Unexpected error occurred during the processing of test.png`? This file cannot be parsed by liquidjs. Try to adapt the `templateIgnorePattern` to ignore those files.
 
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<!-- CONTACT -->
-
-## Contact
-
-Luis Beu - me@luisbeu.de
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/beuluis/create-helper.svg?style=flat-square
-[contributors-url]: https://github.com/beuluis/create-helper/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/beuluis/create-helper.svg?style=flat-square
-[forks-url]: https://github.com/beuluis/create-helper/network/members
-[stars-shield]: https://img.shields.io/github/stars/beuluis/create-helper.svg?style=flat-square
-[stars-url]: https://github.com/beuluis/create-helper/stargazers
-[issues-shield]: https://img.shields.io/github/issues/beuluis/create-helper.svg?style=flat-square
-[issues-url]: https://github.com/beuluis/create-helper/issues
-[license-shield]: https://img.shields.io/github/license/beuluis/create-helper.svg?style=flat-square
+[contributors-shield]: https://img.shields.io/github/contributors/Beuterei/create-helper.svg?style=flat-square
+[contributors-url]: https://github.com/Beuterei/create-helper/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Beuterei/create-helper.svg?style=flat-square
+[forks-url]: https://github.com/Beuterei/create-helper/network/members
+[stars-shield]: https://img.shields.io/github/stars/Beuterei/create-helper.svg?style=flat-square
+[stars-url]: https://github.com/Beuterei/create-helper/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Beuterei/create-helper.svg?style=flat-square
+[issues-url]: https://github.com/Beuterei/create-helper/issues
+[license-shield]: https://img.shields.io/github/license/Beuterei/create-helper.svg?style=flat-square
