@@ -1,20 +1,20 @@
+import { defaultLiquidOptions } from '../config/defaultOptions';
 import { Liquid } from 'liquidjs';
 import type { LiquidOptions } from 'liquidjs/dist/liquid-options';
-import { defaultLiquidOptions } from '../config/defaultOptions';
 
 // Class for all template related stuff. Wrapper class to have a somewhat replaceable interface
 export class TemplateHelper {
-    private readonly liquid: Liquid;
-
     public constructor(options: LiquidOptions = {}) {
         this.liquid = new Liquid({ ...defaultLiquidOptions, ...options });
     }
 
+    private readonly liquid: Liquid;
+
     /**
-     * Register a new tag
+     * Renders a string with values
      */
-    public registerTag(...args: Parameters<Liquid['registerTag']>) {
-        this.liquid.registerTag(...args);
+    public async parseAndRender(...args: Parameters<Liquid['parseAndRender']>) {
+        return await this.liquid.parseAndRender(...args);
     }
 
     /**
@@ -25,10 +25,10 @@ export class TemplateHelper {
     }
 
     /**
-     * Renders a string with values
+     * Register a new tag
      */
-    public async parseAndRender(...args: Parameters<Liquid['parseAndRender']>) {
-        return await this.liquid.parseAndRender(...args);
+    public registerTag(...args: Parameters<Liquid['registerTag']>) {
+        this.liquid.registerTag(...args);
     }
 
     /**

@@ -1,6 +1,6 @@
-import type { SpawnOptions } from 'child_process';
 import type { HookHelperObject } from '../shared/create';
 import { execute } from '../util/command.util';
+import type { SpawnOptions } from 'child_process';
 
 export class HookHelper {
     public constructor(

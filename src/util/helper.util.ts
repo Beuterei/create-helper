@@ -1,6 +1,6 @@
+import { red } from 'colorette';
 import { readdir, stat } from 'fs/promises';
 import { join } from 'path';
-import { red } from 'colorette';
 
 // Helper function to print nice errors
 export const logAndFail = (error: string, trivia?: string): never => {

@@ -1,5 +1,5 @@
-import spdxLicenseList from '@ovyerus/licenses';
 import type { DistinctQuestionModified } from '../shared/inquirer';
+import spdxLicenseList from '@ovyerus/licenses';
 
 // declare module inquire to add the new question type
 declare module 'inquirer' {

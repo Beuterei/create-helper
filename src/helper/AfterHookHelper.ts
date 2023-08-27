@@ -1,10 +1,8 @@
-import { blueBright } from 'colorette';
 import type { AfterCreationHookOptions, HookHelperObject } from '../shared/create';
 import { HookHelper } from './HookHelper';
+import { blueBright } from 'colorette';
 
 export class AfterHookHelper extends HookHelper {
-    private readonly options: AfterCreationHookOptions;
-
     public constructor(
         // Make the hook object available to have context
         hookHelperObject: HookHelperObject,
@@ -36,4 +34,6 @@ export class AfterHookHelper extends HookHelper {
         await this.runCommand(`${this.options.packageManager}`, ['install']);
         console.log(blueBright('Dependencies installed'));
     }
+
+    private readonly options: AfterCreationHookOptions;
 }

@@ -1,20 +1,25 @@
+import type { DistinctQuestionModified } from '../shared/inquirer';
+import { logAndFail } from '../util/helper.util';
 import { underline } from 'colorette';
 import type { Answers } from 'inquirer';
 import inquirer from 'inquirer';
-import type { DistinctQuestionModified } from '../shared/inquirer';
-import { logAndFail } from '../util/helper.util';
 
 // Class for all interactive related stuff. Wrapper class to have a somewhat replaceable interface
 export class UIHelper {
     private inquirer = inquirer;
 
-    // Array of registered questions. Order in this array is order questions are being asked
-    private registeredQuestions: DistinctQuestionModified[] = [];
+    /**
+     * Prompts the user with registered questions in order. Will skip question if found in initialAnswers
+     */
+    public async prompt(initialAnswers?: Partial<Answers>) {
+        // Prompt the questions but skip based on initialAnswers
+        return await this.inquirer.prompt(this.registeredQuestions, initialAnswers);
+    }
 
     /**
      * Registers a new prompt type
      */
-    public registerPrompt(...args: Parameters<typeof inquirer['registerPrompt']>) {
+    public registerPrompt(...args: Parameters<(typeof inquirer)['registerPrompt']>) {
         this.inquirer.registerPrompt(...args);
     }
 
@@ -47,11 +52,6 @@ export class UIHelper {
         }
     }
 
-    /**
-     * Prompts the user with registered questions in order. Will skip question if found in initialAnswers
-     */
-    public prompt(initialAnswers?: Partial<Answers>) {
-        // Prompt the questions but skip based on initialAnswers
-        return this.inquirer.prompt(this.registeredQuestions, initialAnswers);
-    }
+    // Array of registered questions. Order in this array is order questions are being asked
+    private registeredQuestions: DistinctQuestionModified[] = [];
 }
